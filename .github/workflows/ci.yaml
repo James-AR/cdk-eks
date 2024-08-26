@@ -1,25 +1,24 @@
 name: Deploy
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types: [closed]
+  workflow_dispatch: {}
 
 jobs:
-  build:
-    if: github.event.pull_request.merged == true
+  deploy:
     name: Deploy AWS CDK Typescript Stack
     runs-on: ubuntu-latest
     steps:
-      - name: Check Out Code
-        uses: actions/checkout@v3.1.0
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Install Node
-        uses: actions/setup-node@v3.5.0
+        uses: actions/setup-node@v4
 
       - name: Install Dependencies
-        run: npm i
+        run: npm ci
 
       - name: Deploy AWS CDK Stack
         run: "npx cdk deploy EKSCdkStack --ci --require-approval never --no-asset-metadata"
