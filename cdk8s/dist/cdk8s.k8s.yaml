@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdk8s-service-c844e1e1
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: sample
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdk8s-deployment-c8087a1b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+        - image: public.ecr.aws/s9u7u6x1/sample_app_001:no-db
+          name: sample
+          ports:
+            - containerPort: 80
